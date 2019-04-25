@@ -333,9 +333,14 @@ function cdntaxreceipts_contributions_get_status($contributionIds = array()) {
  * Does not deal with locking issue.
  */
 function cdntaxreceipts_log_next_id() {
-  $sql = "SELECT id FROM cdntaxreceipts_log ORDER BY id DESC LIMIT 1";
-  $last_id = CRM_Core_DAO::singleValueQuery($sql);
-  return $last_id + 1;
+  $sql = "
+        SELECT AUTO_INCREMENT
+        FROM information_schema.TABLES
+        WHERE TABLE_SCHEMA = 'civicrm-cceca'
+        AND TABLE_NAME = 'cdntaxreceipts_log'
+    ";
+  $auto_increment = CRM_Core_DAO::singleValueQuery($sql);
+  return $auto_increment;
 }
 
 /**
